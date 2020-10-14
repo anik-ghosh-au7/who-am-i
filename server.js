@@ -18,6 +18,9 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+function getClientIP(req){
+    return (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+}
 
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
@@ -26,7 +29,7 @@ app.get("/api/hello", function (req, res) {
 
 app.get('/api/whoami', (req, res) => {
 res.json({
-ipaddress: req.ip, // client ip address
+ipaddress: getClientIP(req), // client ip address
 language: req.acceptsLanguages()[0], // accepted language
 software: req.get('User-Agent') // software
 });
